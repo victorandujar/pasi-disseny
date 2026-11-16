@@ -1,0 +1,18 @@
+---
+import { empresa } from '../data/empresa';
+const data = {
+  '@context': 'https://schema.org',
+  '@type': 'HomeAndConstructionBusiness',
+  name: empresa.name,
+  legalName: empresa.legalName,
+  description: 'Ebanistería y carpintería a medida para decoración e instalaciones: comercios, stands de feria, particulares, decoradores y arquitectos.',
+  foundingDate: String(empresa.since),
+  url: Astro.site?.href,
+  telephone: empresa.phone.e164,
+  email: empresa.email,
+  address: { '@type': 'PostalAddress', streetAddress: empresa.street, postalCode: empresa.postalCode, addressLocality: empresa.city, addressRegion: empresa.region, addressCountry: 'ES' },
+  geo: { '@type': 'GeoCoordinates', latitude: empresa.geo.lat, longitude: empresa.geo.lng },
+  areaServed: ['ES', 'EU'],
+};
+---
+<script type="application/ld+json" set:html={JSON.stringify(data)} />

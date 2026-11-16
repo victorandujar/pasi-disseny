@@ -1,0 +1,14 @@
+---
+import logo from '../assets/logo.svg';
+import { empresa } from '../data/empresa';
+---
+<footer class="bg-ink pb-24 text-paper/60 lg:pb-0">
+  <div class="mx-auto grid max-w-[90rem] gap-6 px-4 py-12 sm:px-8 md:grid-cols-3 md:items-end">
+    <img src={logo.src} width="96" height="80" alt={empresa.name} class="h-16 w-auto" />
+    <p class="text-sm">{empresa.legalName} · {empresa.street}, {empresa.postalCode} {empresa.city}</p>
+    <ul class="flex gap-5 text-sm md:justify-end">
+      <li><a href="/aviso-legal" class="hover:text-paper">Aviso legal</a></li>
+      <li><a href="/privacidad" class="hover:text-paper">Privacidad</a></li>
+    </ul>
+  </div>
+</footer>

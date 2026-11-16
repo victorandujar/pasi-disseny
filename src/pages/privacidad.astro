@@ -1,0 +1,12 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { empresa } from '../data/empresa';
+---
+<Legal title="Política de privacidad">
+  <h2>Responsable</h2>
+  <p>{empresa.legalName} (NIF B61549879), {empresa.street}, {empresa.postalCode} {empresa.city}. Contacto: {empresa.email}.</p>
+  <h2>Qué datos tratamos</h2>
+  <p>Esta web no tiene formularios ni usa cookies de analítica o publicidad. Si nos llamas o nos escribes, usamos tus datos solo para responderte y preparar tu presupuesto.</p>
+  <h2>Tus derechos</h2>
+  <p>Puedes pedir el acceso, la rectificación, la supresión, la oposición, la limitación o la portabilidad de tus datos escribiendo a {empresa.email}. También puedes reclamar ante la Agencia Española de Protección de Datos (aepd.es).</p>
+</Legal>

@@ -1,0 +1,38 @@
+---
+import { Image } from 'astro:assets';
+import foto from '../assets/proyectos/proyecto-02.jpg';
+import { empresa, mailUrl, telUrl } from '../data/empresa';
+const anys = new Date().getFullYear() - empresa.since;
+---
+<section aria-labelledby="hero-t" class="relative overflow-hidden">
+  <div class="mx-auto grid max-w-[90rem] items-end gap-10 px-4 pb-16 pt-12 sm:px-8 lg:grid-cols-12 lg:pb-24 lg:pt-16">
+    <div class="relative z-10 lg:col-span-6">
+      <p class="label flex items-center gap-3 text-ink-2" data-reveal><span class="h-3 w-3 bg-groc" aria-hidden="true"></span>Fusteria · Ebenisteria per decoració i instal·lacions</p>
+      <h1 id="hero-t" class="titol mt-6 text-[clamp(3.1rem,7.6vw,7rem)]" data-reveal style="--i:1">
+        Muebles a medida para <span class="relative inline-block"><span class="absolute inset-x-0 bottom-[0.08em] -z-10 h-[0.42em] bg-groc" aria-hidden="true"></span>tiendas, stands</span> y casas.
+      </h1>
+      <p class="mt-7 max-w-lg text-lg text-ink-2" data-reveal style="--i:2">
+        Desde {empresa.since} hacemos ebanistería y carpintería a medida en Badalona: para particulares, empresas, decoradores y arquitectos. Fabricamos y montamos en toda España y Europa.
+      </p>
+      <div class="mt-9 flex flex-wrap gap-3" data-reveal style="--i:3">
+        <a href={mailUrl} class="btn btn-groc">Pide presupuesto sin compromiso</a>
+        <a href={telUrl} class="btn btn-line tabular-nums">{empresa.phone.display}</a>
+      </div>
+    </div>
+    <div class="relative lg:col-span-6" data-reveal style="--i:2">
+      <div class="esglao absolute -left-6 -top-6 hidden h-40 w-56 bg-groc lg:block" aria-hidden="true"></div>
+      <figure class="relative">
+        <Image src={foto} alt="Librería con estanterías altas y mesas centrales de madera oscura hechas a medida" widths={[480, 800, 1024]} sizes="(min-width: 1024px) 45vw, 92vw" class="aspect-[4/3] w-full object-cover" loading="eager" fetchpriority="high" />
+        <figcaption class="absolute bottom-0 right-0 bg-ink px-5 py-4 text-paper">
+          <span class="titol block text-4xl text-groc">+{anys}</span>
+          <span class="label text-[0.65rem] text-paper/80">años de oficio</span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Esglaonat com la motllura del logo */
+  .esglao { clip-path: polygon(0 0, 100% 0, 100% 30%, 78% 30%, 78% 55%, 58% 55%, 58% 78%, 35% 78%, 35% 100%, 0 100%); }
+</style>
