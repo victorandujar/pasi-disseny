@@ -1,0 +1,24 @@
+---
+import logo from '../assets/logo.svg';
+import { empresa, telUrl } from '../data/empresa';
+---
+<header class="sticky top-0 z-40 border-b border-line bg-paper/90 backdrop-blur">
+  <div class="mx-auto flex h-[4.5rem] max-w-[90rem] items-center justify-between gap-6 px-4 sm:px-8">
+    <a href="#" class="flex items-center gap-3">
+      <img src={logo.src} width="54" height="45" alt="" class="h-11 w-auto" />
+      <span class="leading-none">
+        <span class="titol block text-[1.45rem]">Pasi Disseny</span>
+        <span class="label mt-1 block text-[0.58rem] text-ink-2">Ebanistería · Badalona</span>
+      </span>
+    </a>
+    <nav aria-label="Principal" class="hidden lg:block">
+      <ul class="flex gap-8 font-medium">
+        <li><a href="#proyectos" class="hover:text-groc-fosc">Proyectos</a></li>
+        <li><a href="#proceso" class="hover:text-groc-fosc">Cómo trabajamos</a></li>
+        <li><a href="#clientes" class="hover:text-groc-fosc">Para quién</a></li>
+        <li><a href="#contacto" class="hover:text-groc-fosc">Contacto</a></li>
+      </ul>
+    </nav>
+    <a href={telUrl} class="btn btn-groc hidden min-h-11 px-5 tabular-nums sm:inline-flex">{empresa.phone.display}</a>
+  </div>
+</header>

@@ -1,0 +1,142 @@
+---
+/**
+ * Estanteria en isomètric que es dibuixa, s'esquarterà, es fabrica i es munta
+ * segons el scroll. Geometria calculada en compilar; el moviment el fa una sola
+ * variable CSS (--p, de 0 a 1).
+ */
+import { fases } from '../data/empresa';
+
+const W = 120, D = 34, H = 170, t = 4;
+const K = 1.7;
+const iso = (x: number, y: number, z: number) => [ (x - y) * 0.866 * K, (x + y) * 0.5 * K - z * K ] as const;
+
+type Box = { id: string; x: [number, number]; y: [number, number]; z: [number, number]; dx: number; dy: number; m: number };
+const caixes: Box[] = [
+  { id: 'trasera', x: [0, W], y: [0, 2], z: [0, H], dx: 70, dy: -55, m: 0.72 },
+  { id: 'costat-e', x: [0, t], y: [0, D], z: [0, H], dx: -110, dy: 10, m: 0.76 },
+  { id: 'zocalo', x: [t, W - t], y: [2, D], z: [0, 10], dx: 0, dy: 80, m: 0.8 },
+  ...[44, 84, 124].map((z, i) => ({ id: `balda-${i + 1}`, x: [t, W - t] as [number, number], y: [2, D - 1] as [number, number], z: [z, z + t] as [number, number], dx: -70 - i * 18, dy: 30 + i * 12, m: 0.82 + i * 0.03 })),
+  { id: 'costat-d', x: [W - t, W], y: [0, D], z: [0, H], dx: 110, dy: 25, m: 0.9 },
+  { id: 'tapa', x: [0, W], y: [0, D], z: [H - t, H], dx: 0, dy: -95, m: 0.93 },
+];
+
+const pt = (p: readonly [number, number]) => `${p[0].toFixed(1)},${p[1].toFixed(1)}`;
+const cares = (b: Box) => {
+  const [x0, x1] = b.x, [y0, y1] = b.y, [z0, z1] = b.z;
+  return {
+    top: [iso(x0, y0, z1), iso(x1, y0, z1), iso(x1, y1, z1), iso(x0, y1, z1)].map(pt).join(' '),
+    right: [iso(x1, y0, z0), iso(x1, y1, z0), iso(x1, y1, z1), iso(x1, y0, z1)].map(pt).join(' '),
+    front: [iso(x0, y1, z0), iso(x1, y1, z0), iso(x1, y1, z1), iso(x0, y1, z1)].map(pt).join(' '),
+  };
+};
+
+// Límits per al viewBox (amb marge per a l'explosió).
+const all = caixes.flatMap((b) => [iso(b.x[0], b.y[1], b.z[0]), iso(b.x[1], b.y[0], b.z[1]), iso(b.x[0], b.y[0], b.z[1]), iso(b.x[1], b.y[1], b.z[0])]);
+const minX = Math.min(...all.map((p) => p[0])) - 130, maxX = Math.max(...all.map((p) => p[0])) + 130;
+const minY = Math.min(...all.map((p) => p[1])) - 110, maxY = Math.max(...all.map((p) => p[1])) + 100;
+const vb = `${minX.toFixed(0)} ${minY.toFixed(0)} ${(maxX - minX).toFixed(0)} ${(maxY - minY).toFixed(0)}`;
+
+// Cotes (fase de disseny): amplada a baix, alçada a l'esquerra.
+const a0 = iso(0, D + 14, 0), a1 = iso(W, D + 14, 0);
+const h0 = iso(-14, D, 0), h1 = iso(-14, D, H);
+---
+<section id="proceso" aria-labelledby="proc-t" class="relative bg-paper-2" data-montaje>
+  <div class="mx-auto max-w-[90rem] px-4 pt-20 sm:px-8 sm:pt-28">
+    <p class="label text-ink-2" data-reveal>Cómo trabajamos</p>
+    <h2 id="proc-t" class="titol mt-4 max-w-3xl text-[clamp(2.6rem,6vw,5.2rem)]" data-reveal style="--i:1">Del plano al mueble montado.</h2>
+  </div>
+
+  <div class="relative h-[320vh]" data-pista>
+    <div class="sticky top-0 flex h-dvh items-center">
+      <div class="mx-auto grid w-full max-w-[90rem] items-center gap-6 px-4 sm:px-8 lg:grid-cols-12 lg:gap-10">
+        <figure class="lg:col-span-7">
+          <svg viewBox={vb} class="moble mx-auto max-h-[52dvh] w-full lg:max-h-[78dvh]" role="img" aria-label="Estantería que se dibuja, se despieza, se fabrica y se monta al bajar por la página" data-moble style="--p:0">
+            <g class="cotes">
+              <line x1={a0[0]} y1={a0[1]} x2={a1[0]} y2={a1[1]} />
+              <line x1={h0[0]} y1={h0[1]} x2={h1[0]} y2={h1[1]} />
+              <text x={(a0[0] + a1[0]) / 2 + 6} y={(a0[1] + a1[1]) / 2 + 22}>1200</text>
+              <text x={(h0[0] + h1[0]) / 2 - 58} y={(h0[1] + h1[1]) / 2}>1700</text>
+            </g>
+            {caixes.map((b) => {
+              const c = cares(b);
+              return (
+                <g class="pieza" data-pieza={b.id} style={`--dx:${b.dx};--dy:${b.dy};--m:${b.m}`}>
+                  <polygon class="cara front" points={c.front} />
+                  <polygon class="cara right" points={c.right} />
+                  <polygon class="cara top" points={c.top} />
+                </g>
+              );
+            })}
+          </svg>
+        </figure>
+        <ol class="lg:col-span-5" aria-label="Fases">
+          {fases.map((f, i) => (
+            <li class="fase border-t border-line py-4 lg:py-6" data-fase={i}>
+              <p class="flex items-baseline gap-4">
+                <span class="label text-ink-2">{f.n}</span>
+                <span class="titol text-[clamp(1.6rem,3.2vw,2.6rem)]">{f.t}</span>
+              </p>
+              <p class="desc mt-2 max-w-md pl-10 text-ink-2">{f.d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .moble { --w: clamp(0, calc((var(--p) - 0.5) / 0.15), 1); overflow: visible; }
+  .moble .pieza {
+    --e: calc(clamp(0, calc((var(--p) - 0.25) / 0.2), 1) * (1 - clamp(0, calc((var(--p) - var(--m)) / 0.12), 1)));
+    transform: translate(calc(var(--dx) * var(--e) * 1px), calc(var(--dy) * var(--e) * 1px));
+  }
+  .moble .cara { stroke: #1c1b19; stroke-width: 1.2; stroke-linejoin: round; }
+  .moble .top { fill: color-mix(in oklab, #e2bd88 calc(var(--w) * 100%), #fffaf0); }
+  .moble .right { fill: color-mix(in oklab, #a87a46 calc(var(--w) * 100%), #fffaf0); }
+  .moble .front { fill: color-mix(in oklab, #c89b62 calc(var(--w) * 100%), #fffaf0); }
+  .moble [data-pieza='trasera'] .front { fill: color-mix(in oklab, #b88a55 calc(var(--w) * 100%), #fffaf0); }
+  .moble .cotes { opacity: calc(1 - clamp(0, calc((var(--p) - 0.18) / 0.1), 1)); stroke: #e3a917; stroke-width: 1.5; stroke-dasharray: 5 4; fill: #8a6237; font: 600 15px 'Instrument Sans Variable', sans-serif; }
+  .moble .cotes text { stroke: none; }
+  .fase { opacity: 0.35; transition: opacity 400ms; }
+  .fase[data-actiu] { opacity: 1; }
+  .fase .desc { display: grid; }
+  @media (max-width: 1023px) {
+    .fase:not([data-actiu]) { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fase { opacity: 1; }
+    .fase:not([data-actiu]) { display: list-item; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-montaje]').forEach((root) => {
+    const pista = root.querySelector<HTMLElement>('[data-pista]');
+    const svg = root.querySelector<SVGSVGElement>('[data-moble]');
+    const fases = [...root.querySelectorAll<HTMLElement>('[data-fase]')];
+    if (!pista || !svg) return;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const marca = (p: number) => {
+      svg.style.setProperty('--p', p.toFixed(3));
+      const idx = p < 0.22 ? 0 : p < 0.48 ? 1 : p < 0.68 ? 2 : 3;
+      fases.forEach((f, i) => f.toggleAttribute('data-actiu', i === idx));
+    };
+    if (reduce) {
+      pista.style.height = 'auto';
+      marca(1);
+      fases.forEach((f) => f.setAttribute('data-actiu', ''));
+      return;
+    }
+    let pend = false;
+    const calc = () => {
+      pend = false;
+      const r = pista.getBoundingClientRect();
+      const total = r.height - innerHeight;
+      marca(Math.min(1, Math.max(0, -r.top / total)));
+    };
+    addEventListener('scroll', () => { if (!pend) { pend = true; requestAnimationFrame(calc); } }, { passive: true });
+    addEventListener('resize', calc);
+    calc();
+  });
+</script>
