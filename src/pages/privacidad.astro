@@ -2,7 +2,7 @@
 import Legal from '../layouts/Legal.astro';
 import { empresa } from '../data/empresa';
 ---
-<Legal title="Política de privacidad">
+<Legal title="Política de privacidad" lang="es" alternates={{ es: '/privacidad', ca: '/ca/privacitat' }}>
   <h2>Responsable</h2>
   <p>{empresa.legalName} (NIF B61549879), {empresa.street}, {empresa.postalCode} {empresa.city}. Contacto: {empresa.email}.</p>
   <h2>Qué datos tratamos</h2>

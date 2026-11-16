@@ -1,24 +1,35 @@
 ---
 import logo from '../assets/logo.svg';
 import { empresa, telUrl } from '../data/empresa';
+import { ui, home, type Lang } from '../i18n/ui';
+interface Props { lang: Lang; alternates?: Record<Lang, string> }
+const { lang, alternates = { es: '/', ca: '/ca' } } = Astro.props;
+const tx = ui[lang];
 ---
 <header class="sticky top-0 z-40 border-b border-line bg-paper/90 backdrop-blur">
-  <div class="mx-auto flex h-[4.5rem] max-w-[90rem] items-center justify-between gap-6 px-4 sm:px-8">
-    <a href="#" class="flex items-center gap-3">
+  <div class="mx-auto flex h-[4.5rem] max-w-[90rem] items-center justify-between gap-4 px-4 sm:px-8">
+    <a href={home(lang)} class="flex min-w-0 items-center gap-3">
       <img src={logo.src} width="54" height="45" alt="" class="h-11 w-auto" />
       <span class="leading-none">
         <span class="titol block text-[1.45rem]">Pasi Disseny</span>
-        <span class="label mt-1 block text-[0.58rem] text-ink-2">Ebanistería · Badalona</span>
+        <span class="label mt-1 block whitespace-nowrap text-[0.58rem] text-ink-2 max-[380px]:hidden">{tx.tagline}</span>
       </span>
     </a>
-    <nav aria-label="Principal" class="hidden lg:block">
+    <nav aria-label={tx.nav.principal} class="hidden lg:block">
       <ul class="flex gap-8 font-medium">
-        <li><a href="#proyectos" class="hover:text-groc-fosc">Proyectos</a></li>
-        <li><a href="#proceso" class="hover:text-groc-fosc">Cómo trabajamos</a></li>
-        <li><a href="#clientes" class="hover:text-groc-fosc">Para quién</a></li>
-        <li><a href="#contacto" class="hover:text-groc-fosc">Contacto</a></li>
+        <li><a href={`${home(lang)}#proyectos`} class="hover:text-groc-fosc">{tx.nav.proyectos}</a></li>
+        <li><a href={`${home(lang)}#proceso`} class="hover:text-groc-fosc">{tx.nav.proceso}</a></li>
+        <li><a href={`${home(lang)}#clientes`} class="hover:text-groc-fosc">{tx.nav.clientes}</a></li>
+        <li><a href={`${home(lang)}#contacto`} class="hover:text-groc-fosc">{tx.nav.contacto}</a></li>
       </ul>
     </nav>
-    <a href={telUrl} class="btn btn-groc hidden min-h-11 px-5 tabular-nums sm:inline-flex">{empresa.phone.display}</a>
+    <div class="flex items-center gap-3">
+      <ul class="flex border border-ink/20 text-sm font-semibold" aria-label={tx.nav.idioma}>
+        {(['es', 'ca'] as const).map((l) => (
+          <li><a href={alternates[l]} hreflang={l} lang={l} aria-current={l === lang ? 'true' : undefined} class={`block px-2.5 py-1.5 uppercase ${l === lang ? 'bg-ink text-paper' : 'hover:bg-paper-2'}`}>{l}</a></li>
+        ))}
+      </ul>
+      <a href={telUrl} class="btn btn-groc hidden min-h-11 px-5 tabular-nums sm:inline-flex">{empresa.phone.display}</a>
+    </div>
   </div>
 </header>

@@ -1,0 +1,10 @@
+---
+import Legal from '../../layouts/Legal.astro';
+import { empresa } from '../../data/empresa';
+---
+<Legal title="Avís legal" lang="ca" alternates={{ es: '/aviso-legal', ca: '/ca/avis-legal' }}>
+  <h2>Titular del lloc web</h2>
+  <p>{empresa.legalName} · NIF B61549879<br />{empresa.street}, {empresa.postalCode} {empresa.city} ({empresa.region}) · Telèfon: {empresa.phone.display} · Correu: {empresa.email}</p>
+  <h2>Propietat intel·lectual</h2>
+  <p>Les fotografies dels projectes i el logotip són propietat de {empresa.legalName}.</p>
+</Legal>

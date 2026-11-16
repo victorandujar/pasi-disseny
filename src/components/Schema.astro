@@ -1,11 +1,15 @@
 ---
 import { empresa } from '../data/empresa';
+import { ui, type Lang } from '../i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
 const data = {
   '@context': 'https://schema.org',
   '@type': 'HomeAndConstructionBusiness',
   name: empresa.name,
   legalName: empresa.legalName,
-  description: 'Ebanistería y carpintería a medida para decoración e instalaciones: comercios, stands de feria, particulares, decoradores y arquitectos.',
+  description: ui[lang].meta.description,
+  inLanguage: lang,
   foundingDate: String(empresa.since),
   url: Astro.site?.href,
   telephone: empresa.phone.e164,

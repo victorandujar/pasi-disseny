@@ -4,7 +4,12 @@
  * segons el scroll. Geometria calculada en compilar; el moviment el fa una sola
  * variable CSS (--p, de 0 a 1).
  */
-import { fases } from '../data/empresa';
+import { fases as fasesDe } from '../data/empresa';
+import { ui, type Lang } from '../i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const tx = ui[lang];
+const fases = fasesDe(lang);
 
 const W = 120, D = 34, H = 170, t = 4;
 const K = 1.7;
@@ -42,15 +47,15 @@ const h0 = iso(-14, D, 0), h1 = iso(-14, D, H);
 ---
 <section id="proceso" aria-labelledby="proc-t" class="relative bg-paper-2" data-montaje>
   <div class="mx-auto max-w-[90rem] px-4 pt-20 sm:px-8 sm:pt-28">
-    <p class="label text-ink-2" data-reveal>Cómo trabajamos</p>
-    <h2 id="proc-t" class="titol mt-4 max-w-3xl text-[clamp(2.6rem,6vw,5.2rem)]" data-reveal style="--i:1">Del plano al mueble montado.</h2>
+    <p class="label text-ink-2" data-reveal>{tx.proceso.label}</p>
+    <h2 id="proc-t" class="titol mt-4 max-w-3xl text-[clamp(2.6rem,6vw,5.2rem)]" data-reveal style="--i:1">{tx.proceso.title}</h2>
   </div>
 
   <div class="relative h-[320vh]" data-pista>
     <div class="sticky top-0 flex h-dvh items-center">
       <div class="mx-auto grid w-full max-w-[90rem] items-center gap-6 px-4 sm:px-8 lg:grid-cols-12 lg:gap-10">
         <figure class="lg:col-span-7">
-          <svg viewBox={vb} class="moble mx-auto max-h-[52dvh] w-full lg:max-h-[78dvh]" role="img" aria-label="Estantería que se dibuja, se despieza, se fabrica y se monta al bajar por la página" data-moble style="--p:0">
+          <svg viewBox={vb} class="moble mx-auto max-h-[52dvh] w-full lg:max-h-[78dvh]" role="img" aria-label={tx.proceso.aria} data-moble style="--p:0">
             <g class="cotes">
               <line x1={a0[0]} y1={a0[1]} x2={a1[0]} y2={a1[1]} />
               <line x1={h0[0]} y1={h0[1]} x2={h1[0]} y2={h1[1]} />
@@ -69,7 +74,7 @@ const h0 = iso(-14, D, 0), h1 = iso(-14, D, H);
             })}
           </svg>
         </figure>
-        <ol class="lg:col-span-5" aria-label="Fases">
+        <ol class="lg:col-span-5" aria-label={tx.proceso.fases}>
           {fases.map((f, i) => (
             <li class="fase border-t border-line py-4 lg:py-6" data-fase={i}>
               <p class="flex items-baseline gap-4">
