@@ -1,14 +1,19 @@
 ---
-import { clientes } from '../data/empresa';
+import { clientes as clientesDe } from '../data/empresa';
+import { ui, type Lang } from '../i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const tx = ui[lang];
+const clientes = clientesDe(lang);
 ---
 <section id="clientes" aria-labelledby="cli-t" class="scroll-mt-20">
   <div class="mx-auto max-w-[90rem] px-4 py-20 sm:px-8 sm:py-28">
     <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
       <div class="lg:col-span-7">
-        <p class="label text-gris" data-reveal>Para quién</p>
-        <h2 id="cli-t" class="titol mt-4 text-[clamp(2.6rem,6vw,5.2rem)]" data-reveal style="--i:1">Un mismo taller, cuatro tipos de encargo.</h2>
+        <p class="label text-gris" data-reveal>{tx.clientes.label}</p>
+        <h2 id="cli-t" class="titol mt-4 text-[clamp(2.6rem,6vw,5.2rem)]" data-reveal style="--i:1">{tx.clientes.title}</h2>
       </div>
-      <p class="text-lg text-ink-2 lg:col-span-4 lg:col-start-9" data-reveal style="--i:2">Contamos con un equipo propio de fabricación y de montaje. Trabajamos en todo el territorio nacional y en Europa.</p>
+      <p class="text-lg text-ink-2 lg:col-span-4 lg:col-start-9" data-reveal style="--i:2">{tx.clientes.text}</p>
     </div>
     <ul class="mt-14 grid gap-px bg-line sm:grid-cols-2 lg:grid-cols-4">
       {clientes.map((c, i) => (

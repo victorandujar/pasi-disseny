@@ -1,0 +1,12 @@
+---
+import Legal from '../../layouts/Legal.astro';
+import { empresa } from '../../data/empresa';
+---
+<Legal title="Política de privacitat" lang="ca" alternates={{ es: '/privacidad', ca: '/ca/privacitat' }}>
+  <h2>Responsable</h2>
+  <p>{empresa.legalName} (NIF B61549879), {empresa.street}, {empresa.postalCode} {empresa.city}. Contacte: {empresa.email}.</p>
+  <h2>Quines dades tractem</h2>
+  <p>Aquesta web no té formularis ni fa servir galetes d’analítica o publicitat. Si ens truques o ens escrius, fem servir les teves dades només per respondre’t i preparar el teu pressupost.</p>
+  <h2>Els teus drets</h2>
+  <p>Pots demanar l’accés, la rectificació, la supressió, l’oposició, la limitació o la portabilitat de les teves dades escrivint a {empresa.email}. També pots presentar una reclamació a l’Agència Espanyola de Protecció de Dades (aepd.es) o a l’Autoritat Catalana de Protecció de Dades (apdcat.cat).</p>
+</Legal>

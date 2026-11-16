@@ -6,6 +6,10 @@ Demo de Ammavaroo para Pasi Disseny, S.L. (NIF B61549879), ebanistería y carpin
 
 No tienen web propia: solo una ficha en el directorio Xarxa Industrial y listados de Páginas Amarillas. Su email es de Hotmail. La sociedad está activa (cuentas presentadas en 2025).
 
+## Idiomas
+
+Castellano en `/` y catalán en `/ca` (textos en `src/i18n/ui.ts` y `src/data/empresa.ts`). Selector de idioma en la cabecera, `hreflang` entre versiones y páginas legales en los dos idiomas (`/aviso-legal`, `/privacidad`, `/ca/avis-legal`, `/ca/privacitat`).
+
 ## Identidad
 
 - **Logo:** su logo (amarillo #FCC84E y gris #6D6C6A, con el perfil de una moldura) vectorizado con potrace a partir de la imagen de su ficha.

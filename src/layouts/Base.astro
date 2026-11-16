@@ -5,12 +5,14 @@ import font from '@fontsource-variable/instrument-sans/files/instrument-sans-lat
 import Seo from '../components/Seo.astro';
 import { isDemo } from '../lib/site';
 import { empresa } from '../data/empresa';
+import { ui, type Lang } from '../i18n/ui';
 
-interface Props { title: string; description: string }
-const { title, description } = Astro.props;
+interface Props { title: string; description: string; lang: Lang; alternates?: Record<Lang, string> }
+const { title, description, lang, alternates } = Astro.props;
+const tx = ui[lang];
 ---
 <!doctype html>
-<html lang="es">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <script is:inline>document.documentElement.classList.add('js')</script>
@@ -19,14 +21,16 @@ const { title, description } = Astro.props;
     <link rel="preload" href={font} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href="/logo.svg" type="image/svg+xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <Seo title={title} description={description} />
+    <Seo title={title} description={description} locale={lang === 'ca' ? 'ca_ES' : 'es_ES'} />
+    {alternates && Object.entries(alternates).map(([l, href]) => <link rel="alternate" hreflang={l} href={new URL(href, Astro.site)} />)}
+    {alternates && <link rel="alternate" hreflang="x-default" href={new URL(alternates.es, Astro.site)} />}
     <slot name="head" />
   </head>
   <body class="min-h-dvh">
-    <a href="#contenido" class="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[100] focus:bg-ink focus:px-4 focus:py-2 focus:text-white">Saltar al contenido</a>
+    <a href="#contenido" class="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[100] focus:bg-ink focus:px-4 focus:py-2 focus:text-white">{tx.skip}</a>
     {isDemo && (
-      <aside aria-label="Aviso de propuesta" class="relative z-50 bg-ink text-paper/80">
-        <p class="label mx-auto max-w-[90rem] px-4 py-2 text-center text-[0.68rem]">Propuesta de diseño no oficial<span class="hidden sm:inline"> · Preparada por Ammavaroo para {empresa.name}</span></p>
+      <aside aria-label={tx.demo} class="relative z-50 bg-ink text-paper/80">
+        <p class="label mx-auto max-w-[90rem] px-4 py-2 text-center text-[0.68rem]">{tx.demo}<span class="hidden sm:inline"> · {tx.demoBy} {empresa.name}</span></p>
       </aside>
     )}
     <slot />
